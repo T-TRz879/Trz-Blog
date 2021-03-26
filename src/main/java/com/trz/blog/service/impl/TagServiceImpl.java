@@ -53,8 +53,10 @@ public class TagServiceImpl implements TagService {
     public List<Tag> listTagWithCount() {
         List<Tag> list = null;
         try{
+            //1、查询到标签列表内容
             list = tagDao.listTag();
             for (Tag tag : list) {
+                //2、标签列表中 文章数量 不是数据库字段 所有要通过其他查询来填充
                 Integer count = articleTagRefDao.countArticleByTagId(tag.getTagId());
                 tag.setArticleCount(count);
             }
@@ -102,7 +104,9 @@ public class TagServiceImpl implements TagService {
     @Transactional(rollbackFor = Exception.class)
     public void deleteTag(Integer id) {
         try{
+            //1、删除标签
             tagDao.deleteById(id);
+            //2、删除 文章标签对应表 中的 对应关系
             articleTagRefDao.deleteByTagId(id);
         }catch (Exception e){
             e.printStackTrace();
@@ -126,8 +130,10 @@ public class TagServiceImpl implements TagService {
     public List<Tag> listTagByArticleId(Integer articleId) {
         List<Tag> tags = null;
         try{
+            //1、根据文章id查询标签
             tags = articleTagRefDao.listTagByArticleId(articleId);
             for (Tag tag : tags) {
+                //2、填充 文章数量属性
                 Integer count = articleTagRefDao.countArticleByTagId(tag.getTagId());
                 tag.setArticleCount(count);
             }

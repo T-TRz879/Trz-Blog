@@ -71,8 +71,10 @@ public class CommentServiceImpl implements CommentService {
         PageHelper.startPage(pageIndex, pageSize);
         List<Comment> comments = null;
         try {
+            //1、根据条件查询评论 criteria 只有【userId】一个键值对
             comments = commentDao.listComment(criteria);
             for (Comment comment : comments) {
+                //2、填充 文章属性【根据文章状态和文章id查询 文章】
                 Article article = articleDao.getArticleByStatusAndId(ArticleStatus.PUBLISH.getValue(), comment.getCommentArticleId());
                 comment.setArticle(article);
             }
@@ -88,9 +90,13 @@ public class CommentServiceImpl implements CommentService {
         PageHelper.startPage(pageIndex, pageSize);
         List<Comment> comments = new ArrayList<>();
         try {
+            //1、查询出 某个用户的所有文章id
             List<Integer> articleIds = articleDao.listArticleIdsByUserId(userId);
+            //2、用户所有文章id数不为null 且 不为0
             if(articleIds != null && articleIds.size() > 0){
+                //3、查询出 某个用户收到的所有评论 【根据文章所有id】
                 comments = commentDao.getReceiveComment(articleIds);
+                //4、填充所有拿到的评论的 文章属性
                 for (Comment comment : comments) {
                     Article article = articleDao.getArticleByStatusAndId(ArticleStatus.PUBLISH.getValue(), comment.getCommentArticleId());
                     comment.setArticle(article);
@@ -140,7 +146,9 @@ public class CommentServiceImpl implements CommentService {
     public List<Comment> listRecentComment(Integer userId, Integer limit) {
         List<Comment> comments = null;
         try {
+            //1、根据条件查询出最新评论
             comments = commentDao.listRecentComment(userId, limit);
+            //2、填充 文章属性
             for (Comment comment : comments) {
                 Article article = articleDao.getArticleByStatusAndId(ArticleStatus.PUBLISH.getValue(), comment.getCommentArticleId());
                 comment.setArticle(article);

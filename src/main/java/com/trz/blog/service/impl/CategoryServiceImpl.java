@@ -54,7 +54,9 @@ public class CategoryServiceImpl implements CategoryService {
     public List<Category> listCategoryWithCount() {
         List<Category> categories = null;
         try {
+            //1、详细查询分类
             categories = categoryDao.listCategory();
+            //2、填充 文章数量属性
             for (Category category : categories) {
                 Integer count = articleCategoryRefDao.countArticleByCategoryId(category.getCategoryId());
                 category.setArticleCount(count);
@@ -70,7 +72,9 @@ public class CategoryServiceImpl implements CategoryService {
     @Transactional(rollbackFor = Exception.class)
     public void deleteCategory(Integer id) {
         try{
+            //1、删除分类标签
             categoryDao.deleteCategory(id);
+            //2、删除 文章与分类对应 的关系
             articleCategoryRefDao.deleteByCategoryId(id);
         }catch (Exception e){
             e.printStackTrace();
@@ -96,7 +100,7 @@ public class CategoryServiceImpl implements CategoryService {
             categoryDao.insert(category);
         }catch (Exception e){
             e.printStackTrace();
-            log.error("添加分类失败，id:{}，cause:{}",category,e);
+            log.error("添加分类失败，category:{}，cause:{}",category,e);
         }
         return category;
     }
@@ -107,7 +111,7 @@ public class CategoryServiceImpl implements CategoryService {
             categoryDao.update(category);
         }catch (Exception e){
             e.printStackTrace();
-            log.error("更新分类失败，id:{}，cause:{}",category,e);
+            log.error("更新分类失败，category:{}，cause:{}",category,e);
         }
     }
 

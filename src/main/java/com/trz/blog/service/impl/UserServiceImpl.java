@@ -30,8 +30,10 @@ public class UserServiceImpl implements UserService {
     public List<User> listUser() {
         List<User> list = null;
         try {
+            //1、查询用户
             list = userDao.listUser();
             for (User user : list) {
+                //2、用户实体中有一个文章数量属性不属于数据库中的属性 我们在拿到用户对象之后 要将其文章数量属性填充起来
                 Integer count = articleDao.countArticleByUser(user.getUserId());
                 user.setArticleCount(count);
             }
@@ -49,7 +51,7 @@ public class UserServiceImpl implements UserService {
             user = userDao.getUserById(id);
         } catch (Exception e) {
             e.printStackTrace();
-            log.error("获取用户列表失败，status:{}，cause:{}", id,e);
+            log.error("获取用户列表失败，id:{}，cause:{}", id,e);
         }
         return user;
     }
@@ -60,7 +62,7 @@ public class UserServiceImpl implements UserService {
             userDao.update(user);
         }catch (Exception e){
             e.printStackTrace();
-            log.error("修改用户信息失败，status:{}，cause:{}",user,e);
+            log.error("修改用户信息失败，user:{}，cause:{}",user,e);
         }
     }
 
@@ -71,7 +73,7 @@ public class UserServiceImpl implements UserService {
             userDao.deleteById(id);
         }catch (Exception e){
             e.printStackTrace();
-            log.error("删除用户失败，status:{}，cause:{}",id,e);
+            log.error("删除用户失败，id:{}，cause:{}",id,e);
         }
     }
 
@@ -81,7 +83,7 @@ public class UserServiceImpl implements UserService {
             userDao.insert(user);
         }catch (Exception e){
             e.printStackTrace();
-            log.error("插入用户失败，status:{}，cause:{}",user,e);
+            log.error("插入用户失败，user:{}，cause:{}",user,e);
         }
         return user;
     }
@@ -95,7 +97,7 @@ public class UserServiceImpl implements UserService {
             user.setArticleCount(count);
         }catch (Exception e){
             e.printStackTrace();
-            log.error("根据用户名和邮箱查询用户失败，status:{}，cause:{}",str,e);
+            log.error("根据用户名和邮箱查询用户失败，str:{}，cause:{}",str,e);
         }
         return user;
     }
@@ -109,7 +111,7 @@ public class UserServiceImpl implements UserService {
             user.setArticleCount(count);
         }catch (Exception e){
             e.printStackTrace();
-            log.error("根据用户名查询用户失败，status:{}，cause:{}",name,e);
+            log.error("根据用户名查询用户失败，name:{}，cause:{}",name,e);
         }
         return user;
     }
@@ -123,7 +125,7 @@ public class UserServiceImpl implements UserService {
             user.setArticleCount(count);
         }catch (Exception e){
             e.printStackTrace();
-            log.error("根据邮箱查询用户失败，status:{}，cause:{}",email,e);
+            log.error("根据邮箱查询用户失败，email:{}，cause:{}",email,e);
         }
         return user;
     }
