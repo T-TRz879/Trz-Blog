@@ -81,7 +81,11 @@ public interface PageDao {
      * @param status 状态
      * @return 页面列表
      */
-    @Select("select page_id,page_key,page_title,page_content,page_create_time,page_update_time,page_view_count,page_comment_count,page_status from page where page_status=#{status,jdbcType=INTEGER}")
+    @Select("<script>" +
+            "select page_id,page_key,page_title,page_content,page_create_time,page_update_time,page_view_count,page_comment_count,page_status from page where " +
+            "<if test='status!=null'>page_status=#{status,jdbcType=INTEGER} and </if>" +
+            "1 = 1" +
+            "</script>")
     @Results({
             @Result(column="page_id",property="pageId",jdbcType = JdbcType.INTEGER,id = true),
             @Result(column="page_key",property="pageKey",jdbcType = JdbcType.VARCHAR),

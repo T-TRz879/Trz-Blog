@@ -20,7 +20,7 @@ public class Category implements Serializable {
      */
     private Integer categoryId;
     /**
-     * 子分类
+     * 父级ID
      */
     private Integer categoryPid;
     /**

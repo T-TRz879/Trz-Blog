@@ -151,7 +151,11 @@ public interface ArticleDao {
      * @param id 文章ID
      * @return 文章
      */
-    @Select("select article_id,article_user_id,article_title,article_content,article_view_count,article_comment_count,article_like_count,article_is_comment,article_status,article_order,article_update_time,article_create_time,article_summary from article where article_status=#{status,jdbcType=INTEGER} and article_id=#{id,jdbcType=INTEGER}")
+    @Select("<script>" +
+            "select article_id,article_user_id,article_title,article_content,article_view_count,article_comment_count,article_like_count,article_is_comment,article_status,article_order,article_update_time,article_create_time,article_summary from article where " +
+            "<if test='status != null'> article_status=#{status,jdbcType=INTEGER} and </if>" +
+            " article_id=#{id,jdbcType=INTEGER}" +
+            "</script>")
     @Results({
             @Result(column="article_id",property="articleId",jdbcType = JdbcType.INTEGER,id = true),
             @Result(column="article_user_id",property="articleUserId",jdbcType = JdbcType.INTEGER),

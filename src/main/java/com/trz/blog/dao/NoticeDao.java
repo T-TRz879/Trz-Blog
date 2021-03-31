@@ -102,7 +102,13 @@ public interface NoticeDao {
      * @param status 状态
      * @return 公告列表
      */
-    @Select("select notice_id,notice_title,notice_content,notice_create_time,notice_update_time,notice_status,notice_order from notice where notice_status=#{status,jdbcType=INTEGER}")
+    @Select("<script>" +
+            "select notice_id,notice_title,notice_content,notice_create_time,notice_update_time,notice_status,notice_order from notice " +
+            "where " +
+            "<if test='status!=null'>notice_status=#{status,jdbcType=INTEGER} and </if>" +
+            "1 = 1" +
+            "" +
+            "</script>")
     @Results({
             @Result(column="notice_id",property="noticeId",jdbcType = JdbcType.INTEGER,id = true),
             @Result(column="notice_title",property="noticeTitle",jdbcType = JdbcType.VARCHAR),

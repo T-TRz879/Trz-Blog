@@ -93,7 +93,12 @@ public interface LinkDao {
      * @param status 状态
      * @return  列表
      */
-    @Select("select link_id,link_url,link_name,link_image,link_description,link_owner_nickname,link_owner_contact,link_update_time,link_create_time,link_order,link_status from link")
+    @Select("<script>" +
+            "select link_id,link_url,link_name,link_image,link_description,link_owner_nickname,link_owner_contact,link_update_time,link_create_time,link_order,link_status from link" +
+            "where" +
+            "<if test='status!=null'> link_status = #{status,jdbcType=INTEGER} and</if>" +
+            "1 = 1" +
+            "</script>")
     @Results({
             @Result(column="link_id",property="linkId",jdbcType = JdbcType.INTEGER,id = true),
             @Result(column="link_url",property="linkUrl",jdbcType = JdbcType.VARCHAR),

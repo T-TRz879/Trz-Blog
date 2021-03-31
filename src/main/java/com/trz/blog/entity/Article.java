@@ -65,7 +65,7 @@ public class Article implements Serializable {
      */
     private String articleContent;
     /**
-     * 文章总结
+     * 文章摘要
      */
     private String articleSummary;
     /**
